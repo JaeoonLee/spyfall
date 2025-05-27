@@ -4,13 +4,29 @@ const saved = ref(false)
 
 const emit = defineEmits(['saved'])
 
-function submit() {
+async function submit() {
   if (name.value.trim()) {
-    localStorage.setItem('player_name', name.value.trim())
+    console.log('Submitting name...')
+    
+    const finalName = name.value.trim()
+    localStorage.setItem('player_name', finalName)
+
+    // Sync to DynamoDB
+    await useApiFetch('/api/joinRoom', {
+  method: 'POST',
+  body: {
+    roomId: 'test-room-abc',
+    playerId: name.value,
+    name: name.value
+  }
+})
+
+
     saved.value = true
     emit('saved')
   }
 }
+
 </script>
 
 <template>
