@@ -38,7 +38,7 @@ async function submit() {
         v-model="name"
         placeholder="Enter your name"
         class="w-full p-3 border border-gray-300 rounded mb-3"
-      />
+      >
 
       <button
         class="w-full bg-green-600 text-white py-2 rounded disabled:opacity-50"

@@ -13,4 +13,9 @@ export default defineNuxtConfig({
       tailwindcss(),
     ],
   },
+  eslint: {
+    config: {
+      stylistic: true
+    }
+  }
 })

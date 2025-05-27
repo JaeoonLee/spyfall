@@ -38,12 +38,12 @@ const res = await $fetch<TokenResponse>('/api/validatePassword', {
         type="password"
         placeholder="Enter password"
         class="w-full p-3 border border-gray-300 rounded mb-3"
-      />
+      >
 
       <button
         class="w-full bg-blue-600 text-white py-2 rounded disabled:opacity-50"
-        @click="submit"
         :disabled="loading"
+        @click="submit"
       >
         {{ loading ? 'Checking...' : 'Enter' }}
       </button>

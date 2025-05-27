@@ -7,7 +7,9 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.817.0",
@@ -31,6 +33,7 @@
     "eslint": "^9.27.0",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.7",
+    "typescript": "^5.8.3",
     "vitest": "^3.1.4"
   }
 }
