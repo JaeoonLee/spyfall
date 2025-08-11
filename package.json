@@ -9,7 +9,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "deploy": "./deploy.sh"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.817.0",

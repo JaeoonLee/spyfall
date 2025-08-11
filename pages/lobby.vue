@@ -20,10 +20,43 @@ const handleVote = (newVote: typeof vote.value) => {
 }
 
 
-const markReady = () => {
-  isReady.value = true
-  const p = players.value.find(p => p.name === playerName.value)
-  if (p) p.isReady = true
+const markReady = async () => {
+  try {
+    await useApiFetch('/api/updateReadyStatus', {
+      method: 'POST',
+      body: { roomId, playerId: playerName.value, isReady: true }
+    })
+    isReady.value = true
+  } catch (error) {
+    console.error('Failed to mark ready:', error)
+  }
+}
+
+const canStartGame = computed(() => {
+  return players.value.length >= 3 && players.value.every(p => p.isReady)
+})
+
+const startGame = async () => {
+  try {
+    await useApiFetch('/api/startGame', {
+      method: 'POST',
+      body: { roomId, gameSettings: vote.value }
+    })
+    
+    // Get player role and navigate to game
+    const roleData = await useApiFetch<{ role: string; location: string | null; gameEndsAt: number }>('/api/getPlayerRole', {
+      method: 'GET',
+      query: { roomId, playerId: playerName.value }
+    })
+    
+    localStorage.setItem('game_role', roleData.role)
+    localStorage.setItem('game_location', roleData.location || '')
+    localStorage.setItem('game_ends_at', roleData.gameEndsAt.toString())
+    
+    navigateTo('/game')
+  } catch (error) {
+    console.error('Failed to start game:', error)
+  }
 }
 
 onMounted(() => {
@@ -76,6 +109,15 @@ stroke-linecap="round" stroke-linejoin="round"
     <!-- Ready Button -->
     <button class="w-full mt-6 bg-blue-600 text-white py-2 rounded" :disabled="isReady" @click="markReady">
       {{ isReady ? 'Waiting for others...' : "I'm Ready" }}
+    </button>
+
+    <!-- Start Game Button (only visible when all are ready) -->
+    <button 
+      v-if="canStartGame" 
+      class="w-full mt-4 bg-green-600 text-white py-2 rounded font-semibold"
+      @click="startGame"
+    >
+      Start Game!
     </button>
   </div>
 </template>

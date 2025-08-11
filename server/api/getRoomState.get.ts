@@ -2,11 +2,12 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
 import { QueryCommand } from '@aws-sdk/lib-dynamodb'
 import { requireAuth } from '../utils/requireAuth'
 
+const config = useRuntimeConfig()
 const client = new DynamoDBClient({
-  region: process.env.AWS_REGION,
+  region: config.AWS_REGION,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!
+    accessKeyId: config.AWS_ACCESS_KEY_ID!,
+    secretAccessKey: config.AWS_SECRET_ACCESS_KEY!
   }
 })
 
