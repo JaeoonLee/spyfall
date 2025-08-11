@@ -29,10 +29,22 @@ if [ -f "../.env" ]; then
     export $(cat ../.env | grep -v '^#' | xargs)
 fi
 
+# Ensure ACCESS_PASSWORD is set
+if [ -z "$ACCESS_PASSWORD" ]; then
+  echo "❌ ERROR: ACCESS_PASSWORD environment variable is not set. Please provide a strong password."
+  exit 1
+fi
+
+# Apply Terraform configuration
+terraform apply -auto-approve \
+  -var="access_password=${ACCESS_PASSWORD}" \
+  -var="jwt_secret=${JWT_SECRET:-super-secret-jwt-key-for-spyfall-game-authentication-system-2024}" \
+  -var="aws_region=${AWS_REGION:-us-east-1}"
+
 # Apply Terraform configuration
 terraform apply -auto-approve \
   -var="access_password=${ACCESS_PASSWORD:-spyfall123}" \
-  -var="jwt_secret=${JWT_SECRET:-super-secret-jwt-key-for-spyfall-game-authentication-system-2024}" \
+  -var="jwt_secret=${JWT_SECRET}" \
   -var="aws_region=${AWS_REGION:-us-east-1}"
 
 # Get the Lambda function URL

@@ -158,7 +158,7 @@ resource "aws_s3_bucket_policy" "spyfall_assets" {
 # CloudFront Distribution (optional, for better global performance)
 resource "aws_cloudfront_distribution" "spyfall_cdn" {
   origin {
-    domain_name = replace(aws_lambda_function_url.spyfall_app_url.function_url, "https://", "")
+    domain_name = regex("^https://([^/]+)", aws_lambda_function_url.spyfall_app_url.function_url)[0]
     origin_id   = "lambda"
 
     custom_origin_config {
